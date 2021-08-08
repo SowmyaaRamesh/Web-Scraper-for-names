@@ -1,21 +1,26 @@
 from bs4 import BeautifulSoup 
-import requests 
-import re
+import requests
 
 girl_names=[]
 boy_names=[] 
-
+invalid = []
 
 def get_html_text(url):
     html_text = requests.get(url).text
     return html_text
 
-def has_special_char(str):
-    special_char = re.compile('[@_!#$%^&*()<>?/\|}{~:]')
-    if(special_char.search(string) == None):
-        return 0
-    else:
+def has_special_char(string):
+    special_char = list('[@_!#$%^&*()<>?/\|}{~:]0123456789')
+    for i in special_char:
+        if (string.find(i)>=0):
+            print("invalid found: "+string)
+            return 1
+    try:
+        string.encode('ascii')
+    except:
+        print("invalid found: "+string)
         return 1
+    return 0
 
 def scrape_girl_names():
     # Site 1: Greek Goddesses
@@ -29,16 +34,13 @@ def scrape_girl_names():
     html_text = get_html_text("https://kidadl.com/articles/top-anime-girl-names-with-meanings")
     soup = BeautifulSoup(html_text, 'lxml')
     names = soup.select('p strong')
-    try:
-        for name in names:
-            parsed_name = name.text.split('.')[1].replace(' ','')
-            if(has_special_char(parsed_name) == 1):
-                print(parsed_name)
-            # girl_names.append()
-    except:
-        print("Ignoring unexpected string")
-
-
+    for name in names:
+        parsed_name = name.text.split(' ')[1]
+        if has_special_char(parsed_name):
+            invalid.append(parsed_name)
+        else:
+            girl_names.append(parsed_name)
 
 scrape_girl_names()
-# print(girl_names)
+print(girl_names)
+print(invalid)
