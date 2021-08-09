@@ -41,8 +41,25 @@ def scrape_girl_names():
     for name in names:
         parsed_name = name.text.split(' ')[1]
         check_and_append(parsed_name)
+    
+    #Site 3: Genshin Cuties
+    html_text = get_html_text("https://genshin-impact.fandom.com/wiki/Category:Female_Characters")
+    soup = BeautifulSoup(html_text, 'lxml')
+    names = soup.find_all('a', class_="category-page__member-link")
+    for name in names:
+        parsed_name = name.text
+        check_and_append(parsed_name)
+
+    #Site 4: Video Game characters
+    html_text = get_html_text("https://en.wikipedia.org/wiki/Category:Female_characters_in_video_games")
+    soup = BeautifulSoup(html_text,'lxml')
+    names = soup.find_all('div', class_='mw-category-group')
+    for name in names:
+        parsed_name = name.text
+        check_and_append(parsed_name)
 
 
 scrape_girl_names()
 print(girl_names)
+print(len(girl_names))
 print(invalid)
