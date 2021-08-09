@@ -28,7 +28,7 @@ def check_and_append(string):
 
 
 def scrape_girl_names():
-    # Site 1: Greek Goddesses
+    #Greek Goddesses
     html_text = get_html_text("https://nameberry.com/list/624/gorgeous-greek-goddess-names-for-babies")
     soup = BeautifulSoup(html_text, 'lxml')
     names = soup.find_all('span', class_='jsx-1193454341 mr-10')
@@ -36,15 +36,23 @@ def scrape_girl_names():
         parsed_name = name.text
         check_and_append(parsed_name)
 
-    #Site 2: Anime Girls 
+    #Anime Girls 
     html_text = get_html_text("https://kidadl.com/articles/top-anime-girl-names-with-meanings")
     soup = BeautifulSoup(html_text, 'lxml')
     names = soup.select('p strong')
     for name in names:
         parsed_name = name.text.split(' ')[1]
         check_and_append(parsed_name)
+
+    html_text = get_html_text("https://skdesu.com/en/women-of-anime-female-characters/")
+    soup = BeautifulSoup(html_text, 'lxml')
+    names = soup.select('ol li')
+    for name in names:
+        parsed_name = name.text.split('[')[0].strip().split(' ')[0]
+        # print(parsed_name)
+        check_and_append(parsed_name)
     
-    #Site 3: Genshin Cuties
+    #Genshin Cuties
     html_text = get_html_text("https://genshin-impact.fandom.com/wiki/Category:Female_Characters")
     soup = BeautifulSoup(html_text, 'lxml')
     names = soup.find_all('a', class_="category-page__member-link")
@@ -55,7 +63,7 @@ def scrape_girl_names():
             parsed_name = name.text
         check_and_append(parsed_name)
 
-    #Site 4: Video Game characters
+    #Video Game characters
     html_text = get_html_text("https://en.wikipedia.org/wiki/Category:Female_characters_in_video_games")
     soup = BeautifulSoup(html_text,'lxml')
     names = soup.find_all('div', class_='mw-category-group')
@@ -63,6 +71,20 @@ def scrape_girl_names():
         parsed_names = nameline.text.split('\n')
         for name in parsed_names:
             check_and_append(name.split(" ")[0])
+
+    #Disney characters
+    html_text = get_html_text("https://kidadl.com/articles/disney-female-character-names-to-be-inspired-by")
+    soup = BeautifulSoup(html_text, 'lxml')
+    body = soup.find('div', class_='rich-text-article-body w-richtext')
+    names = body.find_all('strong')
+    for name in names:
+        try:
+            parsed_name = name.text.split(' ')[1]
+            # print(parsed_name)
+        except:
+            print("Could not parse:"+ name.text)
+
+    
 
 
 scrape_girl_names()
