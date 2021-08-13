@@ -7,8 +7,7 @@ boy_names=[]
 invalid = []
 
 def get_html_text(url):
-    html_text = requests.get(url).text
-    return html_text
+    return requests.get(url).text
 
 def check_and_append(string):
     special_char = list('[@_!-#$.%^&*()<>?/\|}{~:]0123456789')
@@ -23,7 +22,8 @@ def check_and_append(string):
     except:
         invalid.append(string)
         return 0
-    girl_names.append(string)
+    # girl_names.append(string)
+    boy_names.append(string)
     return 1
 
 
@@ -66,6 +66,18 @@ def scrape_girl_names():
             parsed_name = name.text
         if check_and_append(parsed_name):
             add_name("girls.json", parsed_name, {'genre':'video game', 'source': 'genshin impact'})
+    
+    html_text = get_html_text("https://genshin-impact.fandom.com/wiki/Category:Female_Characters?from=Sara")
+    soup = BeautifulSoup(html_text, 'lxml')
+    names = soup.find_all('a', class_="category-page__member-link")
+    for name in names:
+        try:
+            parsed_name = name.text.split(" ")[1]
+        except:
+            parsed_name = name.text
+        
+        print(parsed_name)
+    
 
     #Video Game characters
     html_text = get_html_text("https://en.wikipedia.org/wiki/Category:Female_characters_in_video_games")
@@ -89,6 +101,46 @@ def scrape_girl_names():
         if check_and_append(parsed_name):
             add_name("girls.json", parsed_name, {'genre':'disney'})
 
+
+def scrape_boy_names():
+
+    #Genshin Characters
+    html_text = get_html_text("https://genshin-impact.fandom.com/wiki/Category:Male_Characters")
+    soup = BeautifulSoup(html_text, 'lxml')
+    names = soup.find_all('a', class_='category-page__member-link')
+    for name in names:
+        try:
+            parsed_name = name.text.split(" ")[1]
+        except:
+            parsed_name = name.text
+
+        check_and_append(parsed_name)
+    
+    html_text = get_html_text("https://genshin-impact.fandom.com/wiki/Category:Male_Characters?from=Jinglun")
+    soup = BeautifulSoup(html_text, 'lxml')
+    names = soup.find_all('a', class_='category-page__member-link')
+    for name in names:
+        try:
+            parsed_name = name.text.split(" ")[1]
+        except:
+            parsed_name = name.text
+        check_and_append(parsed_name)
+
+    html_text = get_html_text("https://genshin-impact.fandom.com/wiki/Category:Male_Characters?from=Royce")
+    soup = BeautifulSoup(html_text, 'lxml')
+    names = soup.find_all('a', class_='category-page__member-link')
+    for name in names:
+        try:
+            parsed_name = name.text.split(" ")[1]
+        except:
+            parsed_name = name.text
+        check_and_append(parsed_name)
+
+       
+      
 scrape_girl_names()
-print(girl_names)
+# scrape_boy_names()
+# print(boy_names)
+# print(len(boy_names))
+# print(girl_names)
 print(invalid)
