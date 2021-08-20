@@ -22,8 +22,8 @@ def check_and_append(string):
     except:
         invalid.append(string)
         return 0
-    # girl_names.append(string)
-    boy_names.append(string)
+    girl_names.append(string)
+    # boy_names.append(string)
     return 1
 
 
@@ -75,9 +75,10 @@ def scrape_girl_names():
             parsed_name = name.text.split(" ")[1]
         except:
             parsed_name = name.text
-        
-        print(parsed_name)
+        if check_and_append(parsed_name):
+            add_name("girls.json", parsed_name, {'genre':'video game', 'source': 'genshin impact'})
     
+       
 
     #Video Game characters
     html_text = get_html_text("https://en.wikipedia.org/wiki/Category:Female_characters_in_video_games")
@@ -113,8 +114,10 @@ def scrape_boy_names():
             parsed_name = name.text.split(" ")[1]
         except:
             parsed_name = name.text
-
-        check_and_append(parsed_name)
+    
+        if check_and_append(parsed_name):
+            add_name("boys.json", parsed_name, {'genre':'video game', 'source': 'genshin impact'})
+    
     
     html_text = get_html_text("https://genshin-impact.fandom.com/wiki/Category:Male_Characters?from=Jinglun")
     soup = BeautifulSoup(html_text, 'lxml')
@@ -124,7 +127,10 @@ def scrape_boy_names():
             parsed_name = name.text.split(" ")[1]
         except:
             parsed_name = name.text
-        check_and_append(parsed_name)
+    
+        if check_and_append(parsed_name):
+            add_name("boys.json", parsed_name, {'genre':'video game', 'source': 'genshin impact'})
+
 
     html_text = get_html_text("https://genshin-impact.fandom.com/wiki/Category:Male_Characters?from=Royce")
     soup = BeautifulSoup(html_text, 'lxml')
@@ -134,13 +140,22 @@ def scrape_boy_names():
             parsed_name = name.text.split(" ")[1]
         except:
             parsed_name = name.text
-        check_and_append(parsed_name)
+    
+        if check_and_append(parsed_name):
+            add_name("boys.json", parsed_name, {'genre':'video game', 'source': 'genshin impact'})
 
+
+    html_text = get_html_text("https://momlovesbest.com/greek-mythology-baby-names")
+    soup = BeautifulSoup(html_text, 'lxml')
+    names = soup.find_all('h3',class_="heading-list main")
+    for name in names:
+        parsed_name = name.text.split(' ')[1]
+        add_name("boys.json", parsed_name, {'origin':'greek', 'genre':'god'})
        
       
-scrape_girl_names()
-# scrape_boy_names()
+# scrape_girl_names()
+scrape_boy_names()
 # print(boy_names)
-# print(len(boy_names))
+# print(len(girl_names))
 # print(girl_names)
-print(invalid)
+# print(invalid)
