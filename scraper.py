@@ -22,8 +22,8 @@ def check_and_append(string):
     except:
         invalid.append(string)
         return 0
-    girl_names.append(string)
-    # boy_names.append(string)
+    # girl_names.append(string)
+    boy_names.append(string)
     return 1
 
 
@@ -144,7 +144,7 @@ def scrape_boy_names():
         if check_and_append(parsed_name):
             add_name("boys.json", parsed_name, {'genre':'video game', 'source': 'genshin impact'})
 
-
+    # Greek gods      
     html_text = get_html_text("https://momlovesbest.com/greek-mythology-baby-names")
     soup = BeautifulSoup(html_text, 'lxml')
     names = soup.find_all('h3',class_="heading-list main")
@@ -152,6 +152,32 @@ def scrape_boy_names():
         parsed_name = name.text.split(' ')[1]
         add_name("boys.json", parsed_name, {'origin':'greek', 'genre':'god'})
        
+    # Video game characters 
+    html_text = get_html_text("https://en.wikipedia.org/wiki/Category:Male_characters_in_video_games")
+    soup = BeautifulSoup(html_text, 'lxml')
+    names = soup.find_all('div',class_="mw-category-group")
+    for nameline in names:
+        parsed_names = nameline.text.split('\n')
+        for name in parsed_names:
+            parsed_name = name.split(" ")[0]
+            if check_and_append(parsed_name):
+                add_name("boys.json", parsed_name, {'origin':'video game'})
+
+    #Anime characters 
+    html_text = get_html_text("https://en.wikipedia.org/wiki/Category:Male_characters_in_anime_and_manga")
+    soup = BeautifulSoup(html_text, 'lxml')
+    names = soup.find_all('div',class_="mw-category-group")
+    for nameline in names:
+        parsed_names = nameline.text.split('\n')
+        for name in parsed_names:
+            parsed_name = name.split(' ')[0]
+            if(check_and_append(parsed_name)):
+                print(parsed_name)
+                add_name("boys.json", parsed_name, {'genre':'anime'})
+
+    
+    
+
       
 # scrape_girl_names()
 scrape_boy_names()
