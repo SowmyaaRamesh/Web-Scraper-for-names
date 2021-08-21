@@ -172,8 +172,27 @@ def scrape_boy_names():
         for name in parsed_names:
             parsed_name = name.split(' ')[0]
             if(check_and_append(parsed_name)):
-                print(parsed_name)
                 add_name("boys.json", parsed_name, {'genre':'anime'})
+
+    html_text = get_html_text("https://www.ranker.com/list/hot-anime-guys-and-boys/ranker-anime")
+    soup = BeautifulSoup(html_text, 'lxml')
+    names = soup.find_all('a',class_="gridItem_name__wCyGi gridItem_nameLink__2hPOH")
+    for name in names:
+        parsed_name = name.text.split(' ')[0]
+        if check_and_append(parsed_name):
+            add_name("boys.json",parsed_name,{'genre':'anime'})
+
+    html_text = get_html_text("https://thebiem.com/top-100-hot-anime-guys/")
+    soup = BeautifulSoup(html_text, 'lxml')
+    names = soup.find_all('h2')
+    for name in names:
+        try:
+            parsed_name = name.text.split(' ')[1]
+        except: 
+            parsed_name = name.text
+        if(check_and_append(parsed_name)):
+            add_name("boys.json",parsed_name,{'genre':'anime'})
+           
 
     
     
