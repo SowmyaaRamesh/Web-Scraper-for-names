@@ -23,7 +23,7 @@ def check_and_append(string):
         invalid.append(string)
         return 0
     # girl_names.append(string)
-    boy_names.append(string)
+    # boy_names.append(string)
     return 1
 
 
@@ -198,7 +198,7 @@ def scrape_boy_names():
     
 
       
-# scrape_girl_names()
+scrape_girl_names()
 scrape_boy_names()
 # print(boy_names)
 # print(len(girl_names))
