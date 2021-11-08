@@ -8,3 +8,9 @@ The names have been gathered from various sites, but the origin of the names can
 - anime
 - video games
 - disney characters
+
+No. of names scraped:
+
+| Boys | Girls |
+| ---- | ----- |
+| 995  | 717   |
